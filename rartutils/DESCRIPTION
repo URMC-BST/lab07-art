@@ -1,0 +1,12 @@
+Package: rartutils
+Title: Some Utilities For Making Art
+Version: 0.0.0.9000
+Authors@R: 
+    person("Andrew", "McDavid", , "Andrew_McDavid@urmc.rochester.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-6581-1213"))
+Description: Apply an affine transformation to a paraemtric curve.
+License: GPL (>=3)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2

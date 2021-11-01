@@ -1,0 +1,57 @@
+---
+title: "Lab 07"
+author: "Your group"
+date: "11/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries
+```{r}
+library(tidyverse)
+library(colourlovers)
+library(data.tree)
+devtools::load_all("rartutils/")
+```
+
+
+# Option 1
+
+*  Implement a parametric leaf
+*  Rotate/scale it with `trans_affine`
+*  Make a pretty picture
+
+# Option 2
+
+*  Modify the branching process code below
+*  Make a pretty picture
+
+```{r}
+bpp = function(parent, level){
+    te = rexp(1, rate = 1) + 1
+    t = parent$t + te
+    branch_center = rnorm(1)
+    print(glue::glue("At {level}: t = {t}"))
+    if(t > t_max){
+      print(glue::glue("At {level}: hit tmax!"))
+      return(parent) # hit t_max, stop recursing by returning parent
+    }
+    n_child = rpois(1, 1.7)
+    print(glue::glue("At {level}: t = {t}, n_child = {n_child}"))
+    offset = seq(0, to = parent$n_sibling, length.out = n_child)
+    offset = offset - mean(offset)
+    for(level in seq_len(n_child)){
+      child = parent$AddChild(level, 
+                              t0 = parent$t, t = parent$t + te, te = te, 
+                              n_sibling = n_child, 
+                              x = branch_center + offset[level], x0 = parent$x)
+      bpp(child, level = level + 1) # add more children
+    }
+    print(glue::glue("At {level}: added all children!"))
+    # added all children, return parent
+    return(parent)
+}
+```
